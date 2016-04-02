@@ -20,9 +20,8 @@ public class Application implements CommandLineRunner {
 
     @Override
     public void run(String... strings) throws Exception {
-        if (strings.length == 1) {
+        if (strings.length == 1 && !strings[0].isEmpty()) {
             positionCsvGeneratorService.generateCsvForLocationQuery(strings[0]);
-            System.out.println("SUCCESS");
         }
     }
 }
