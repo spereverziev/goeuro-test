@@ -1,0 +1,7 @@
+client:
+    restEndpoints:
+        getPositions: http://api.goeuro.com/api/v2/position/suggest/en/{location}
+
+csv:
+    fileName: test-locations.csv
+    fileEncoding: UTF-8
