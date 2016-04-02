@@ -2,13 +2,16 @@ package com.goeuro.assignment.client;
 
 import com.goeuro.assignment.Application;
 import com.goeuro.assignment.domain.Position;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.web.client.HttpClientErrorException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -23,6 +26,9 @@ public class RestApiClientTest {
     @Autowired
     private RestApiClient goEuroRestClient;
 
+    @Rule
+    public ExpectedException exception = ExpectedException.none();
+
     @Test
     public void testGetPositionsByLocation_whenLocationValid() throws Exception{
         //given
@@ -36,15 +42,16 @@ public class RestApiClientTest {
     }
 
     @Test
-    public void testGetInformationByLocation_whenLocationIsEmptyString() throws Exception{
+    public void testGetInformationByLocation_shouldThrowClientException_whenLocationIsEmptyString() throws Exception{
         //given
         String location = "";
+
         //when
-        ResponseEntity<Position[]> response = goEuroRestClient.getPositions(location);
-        Position[] positions = response.getBody();
+        exception.expect(HttpClientErrorException.class);
+        exception.expectMessage("400 Bad Request");
+
         //then
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(positions.length).isEqualTo(DEFAULT_RESPONSE_ARRAY_LENGTH);
+        goEuroRestClient.getPositions(location);
     }
 
 }
