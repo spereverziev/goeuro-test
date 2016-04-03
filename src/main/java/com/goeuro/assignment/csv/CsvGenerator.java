@@ -20,24 +20,21 @@ public class CsvGenerator {
     @Value("${csv.fileEncoding}")
     private String CSV_FILE_ENCODING;
 
-    public void writeToCsv(Position[] positions) {
-        try {
-            OutputStreamWriter out = new OutputStreamWriter(
-                    new FileOutputStream(CSV_FILE_NAME), CSV_FILE_ENCODING);
-            BufferedWriter bw = new BufferedWriter(out);
+    public void writeToCsv(Position[] positions) throws IOException {
+        OutputStreamWriter out = new OutputStreamWriter(
+                new FileOutputStream(CSV_FILE_NAME), CSV_FILE_ENCODING);
+        BufferedWriter bw = new BufferedWriter(out);
 
-            for (Position position : positions) {
-                bw.write(toCsvReocord(position));
-                bw.newLine();
-            }
-
-            bw.flush();
-            bw.close();
-        } catch (IOException e) {
+        for (Position position : positions) {
+            bw.write(toCsvRecord(position));
+            bw.newLine();
         }
+
+        bw.flush();
+        bw.close();
     }
 
-    private String toCsvReocord(Position position) {
+    private String toCsvRecord(Position position) {
         StringBuilder record = new StringBuilder();
         record.append(position.getId());
         record.append(CSV_SEPARATOR);

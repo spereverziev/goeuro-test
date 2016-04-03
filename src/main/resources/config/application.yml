@@ -5,3 +5,8 @@ client:
 csv:
     fileName: locations.csv
     fileEncoding: UTF-8
+
+logging:
+    level:
+        com.goeuro.assignment.Application: DEBUG
+        org.springframework: OFF
